@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 100">
+  <rect x="10" y="10" width="180" height="80" rx="20" ry="20" fill="#4A90E2" />
+  <text x="100" y="65" font-family="Arial, sans-serif" font-size="40" font-weight="bold" text-anchor="middle" fill="white">TaskIT</text>
+  <path d="M170 30 L180 40 L200 20" stroke="white" stroke-width="6" fill="none" />
+  <path d="M190 30 L210 10" stroke="#4A90E2" stroke-width="6" fill="none" />
+</svg>

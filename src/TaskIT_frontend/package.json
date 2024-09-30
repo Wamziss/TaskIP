@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "dev": "vite",
     "setup": "npm i && dfx canister create TaskIT_backend && dfx generate TaskIT_backend && dfx deploy",
     "start": "vite --port 3000",
     "prebuild": "dfx generate",

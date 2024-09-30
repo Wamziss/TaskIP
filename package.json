@@ -3,16 +3,28 @@
     "node": ">=16.0.0",
     "npm": ">=7.0.0"
   },
-  "name": "TaskIT",
+  "name": "taskit",
   "scripts": {
+    "dev": "vite",
     "build": "npm run build --workspaces --if-present",
     "prebuild": "npm run prebuild --workspaces --if-present",
     "pretest": "npm run prebuild --workspaces --if-present",
     "start": "npm start --workspaces --if-present",
-    "test": "npm test --workspaces --if-present"
+    "test": "npm test --workspaces --if-present",
+    "build:css": "npx tailwindcss -i ./src/TaskIT_frontend/src/index.scss -o ./src/TaskIT_frontend/dist/assets/index.css --watch"
   },
   "type": "module",
   "workspaces": [
     "src/TaskIT_frontend"
-  ]
+  ],
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.13"
+  },
+  "dependencies": {
+    "lucide-react": "^0.446.0",
+    "react-bootstrap-icons": "^1.11.4",
+    "react-router-dom": "^6.26.2"
+  }
 }
