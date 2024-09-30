@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "TaskIT_backend": {
+      "main": "src/TaskIT_backend/main.mo",
+      "type": "motoko"
+    },
+    "TaskIT_frontend": {
+      "dependencies": [
+        "TaskIT_backend"
+      ],
+      "source": [
+        "src/TaskIT_frontend/dist"
+      ],
+      "type": "assets",
+      "workspace": "TaskIT_frontend"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
