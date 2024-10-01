@@ -10,8 +10,7 @@
     "prebuild": "npm run prebuild --workspaces --if-present",
     "pretest": "npm run prebuild --workspaces --if-present",
     "start": "npm start --workspaces --if-present",
-    "test": "npm test --workspaces --if-present",
-    "build:css": "npx tailwindcss -i ./src/TaskIT_frontend/src/index.scss -o ./src/TaskIT_frontend/dist/assets/index.css --watch"
+    "test": "npm test --workspaces --if-present"
   },
   "type": "module",
   "workspaces": [
@@ -23,8 +22,10 @@
     "tailwindcss": "^3.4.13"
   },
   "dependencies": {
+    "@dfinity/auth-client": "^2.1.2",
     "lucide-react": "^0.446.0",
     "react-bootstrap-icons": "^1.11.4",
-    "react-router-dom": "^6.26.2"
+    "react-router-dom": "^6.26.2",
+    "tailwind-scrollbar": "^3.1.0"
   }
 }

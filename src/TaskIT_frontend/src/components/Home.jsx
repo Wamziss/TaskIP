@@ -1,7 +1,34 @@
 import React from 'react';
 import logo from '../assets/logo.svg';
+import { useAuth } from './AuthContext';
 
 const Home = () => {
+  const authClient = useAuth();
+
+  const handleSignIn = async (event) => {
+      event.preventDefault();
+      if (authClient) {
+          try {
+              let identityProvider = process.env.II_URL;
+              authClient.login({
+                  identityProvider,
+                  onSuccess: async () => {
+                      console.log("Logged in!");
+
+                      const identity = authClient.getIdentity();
+                      console.log(identity.getPrincipal().toText());
+                      window.location.href = './dashboard';
+                  },
+                  onError: (error) => {
+                      console.error("Login failed:", error);
+                  },
+              });
+          } catch (error) {
+              console.error("AuthClient login failed:", error);
+          }
+      }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#A4C3E3] to-white text-gray-800">
       {/* Navbar */}
@@ -19,7 +46,7 @@ const Home = () => {
               </div>
             </div>
             <div>
-              <button className="bg-[#4A90E2] text-white px-4 py-2 rounded-full hover:bg-[#3A7BC8] transition duration-300" onClick={()=> {window.location.href = './dashboard'}}>
+              <button className="bg-[#4A90E2] text-white px-4 py-2 rounded-full hover:bg-[#3A7BC8] transition duration-300"  onClick={(event) => handleSignIn(event)}>
                 Sign In
               </button>
             </div>
