@@ -1,54 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, Plus, ThreeDotsVertical } from 'react-bootstrap-icons';
+import { QRCodeCanvas } from 'qrcode.react'; // For generating QR code
 import Sidebar from './subcomponents/Sidebar';
-import Table from './Dashboard/Table';
 import Header from './subcomponents/Header';
-import { Actor, HttpAgent} from '@dfinity/agent';
+import { Copy, QrCode, Pencil } from 'react-bootstrap-icons';
 import { useAuth } from './AuthContext';
 
 const Settings = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState('Project A');
-  const [showModal, setShowModal] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [principalId, setPrincipalId] = useState('');
+  const [username, setUsername] = useState('myusername');
+  const [showQrModal, setShowQrModal] = useState(false);
+  const [isPushEnabled, setIsPushEnabled] = useState(false);
+  const [isWatchEnabled, setIsWatchEnabled] = useState(false);
   const authClient = useAuth();
-  
-  useEffect(() => {
-    if (!authClient) {
-        console.log("AuthClient is not yet initialized.");
-        return;
-    }
-
-    
-    const identity = authClient.getIdentity();
-    const canisterId = import.meta.env.VITE_CANISTER_ID;
-
-    console.log("Hurray!:", identity.getPrincipal().toText());
-
-    if (!canisterId) {
-        throw new Error('Canister ID is not defined');
-    }
-
-    const getAuthenticatedActor = () => {
-        try {
-            const agent = new HttpAgent({ identity });
-            return Actor.createActor(idlFactory, { agent, canisterId });
-        } catch (error) {
-            console.error("Failed to create actor:", error);
-            throw error;
-        }
-    }
-
-    console.log("AuthClient initialized:");
-
-    }, [authClient]);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
-  const toggleModal = () => setShowModal(!showModal);
-  const toggleDropdown = () => setShowDropdown(!showDropdown);
+  const toggleQrModal = () => setShowQrModal(!showQrModal);
 
-  const projects = ['Project A', 'Project B', 'Project C'];
+  useEffect(() => {
+    if (authClient) {
+      const identity = authClient.getIdentity();
+      setPrincipalId(identity.getPrincipal().toText());
+    }
+  }, [authClient]);
 
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    alert('Copied to clipboard');
+  };
 
   return (
     <div className="flex h-screen bg-gray-100 overflow-x-hidden">
@@ -57,67 +36,98 @@ const Settings = () => {
 
       {/* Main Content */}
       <div className={`flex-1 flex flex-col transition-all duration-300 ${isOpen ? 'ml-64' : 'ml-0'} lg:ml-64 overflow-x-hidden`}>
-        <Header/>
+        <Header />
 
-        <main className="flex-1 bg-white ">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex justify-between items-center mb-6">
-              <div className="flex items-center space-x-4">
-              <button
-                  onClick={toggleDropdown}
-                  className="text-2xl font-semibold text-gray-900 flex items-center space-x-2"
-                >
-                  <span>{selectedProject}</span>
-                  <ChevronDown className="h-5 w-5 text-gray-600" />
-                </button>
-
-                {/* Dropdown menu */}
-                {showDropdown && (
-                  <div className="absolute z-10 mt-2 w-48 bg-white shadow-lg rounded-md">
-                    <ul className="divide-y divide-gray-200">
-                      {projects.map((project) => (
-                        <li
-                          key={project}
-                          onClick={() => {
-                            setSelectedProject(project);
-                            setShowDropdown(false); // Close the dropdown after selecting a project
-                          }}
-                          className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
-                        >
-                          {project}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                <button onClick={toggleModal} className="text-gray-500 hover:text-gray-700">
-                  <ThreeDotsVertical className="h-5 w-5" />
-                </button>
-                {/* Modal for project actions */}
-                {showModal && (
-                  <div className="absolute z-10 mt-2 w-48 bg-white shadow-lg rounded-md">
-                    <ul>
-                      <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">View Description</li>
-                      <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">Edit Project</li>
-                      <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">Delete</li>
-                    </ul>
-                  </div>
-                )}
-              </div>
-
-              <button
-                type="button"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#4A90E2] hover:bg-[#3A7BC8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4A90E2]"
-              >
-                <Plus className="mr-2 h-5 w-5" /> CREATE PROJECT
+        <main className="flex-1 bg-white p-6">
+          {/* Principal ID */}
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold">My Principal ID</h2>
+            <div className="flex items-center space-x-4 mt-2">
+              <input
+                type="text"
+                value={principalId}
+                readOnly
+                className="border p-2 rounded w-72"
+              />
+              <button onClick={() => copyToClipboard(principalId)} className="text-gray-500 hover:text-gray-700">
+                <Copy className="h-5 w-5" />
+              </button>
+              {/* QR Code Icon */}
+              <button onClick={toggleQrModal} className="text-gray-500 hover:text-gray-700">
+                <QrCode className="h-5 w-5" />
               </button>
             </div>
+          </div>
 
-            {/* Table */}
-            <div className="overflow-x-auto">
-              <Table/>
+          {/* Username */}
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold">Set Unique Username</h2>
+            <small className="text-gray-500">This is just for purposes of connecting with others but optional. If concerned about anonymity, set a name that’s not close to your real identity.</small>
+            <div className="flex items-center space-x-4 mt-2">
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="border p-2 rounded w-72"
+              />
+              <button className="text-gray-500 hover:text-gray-700">
+                <Pencil className="h-5 w-5" />
+              </button>
+              <button onClick={() => copyToClipboard(username)} className="text-gray-500 hover:text-gray-700">
+                <Copy className="h-5 w-5" />
+              </button>
             </div>
           </div>
+
+          {/* Notifications */}
+          <div className="mb-4">
+            <div className="flex justify-between items-center">
+              <label className="text-lg font-semibold">Enable Push Notifications</label>
+              <div className="relative inline-flex items-center">
+                <input
+                  type="checkbox"
+                  checked={isPushEnabled}
+                  onChange={() => setIsPushEnabled(!isPushEnabled)}
+                  className="sr-only"
+                />
+                <div className={`w-14 h-8 rounded-full flex items-center p-1 cursor-pointer transition-colors duration-300 ${isPushEnabled ? 'bg-blue-500' : 'bg-gray-300'}`}>
+                  <div className={`w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ${isPushEnabled ? 'translate-x-6' : 'translate-x-1'}`}></div>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-between items-center mt-4">
+              <label className="text-lg font-semibold">Enable Smart Watch Notifications</label>
+              <div className="relative inline-flex items-center">
+                <input
+                  type="checkbox"
+                  checked={isWatchEnabled}
+                  onChange={() => setIsWatchEnabled(!isWatchEnabled)}
+                  className="sr-only"
+                />
+                <div className={`w-14 h-8 rounded-full flex items-center p-1 cursor-pointer transition-colors duration-300 ${isWatchEnabled ? 'bg-blue-500' : 'bg-gray-300'}`}>
+                  <div className={`w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ${isWatchEnabled ? 'translate-x-6' : 'translate-x-1'}`}></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* QR Code Modal */}
+          {showQrModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                <h3 className="text-xl font-semibold mb-4">Scan to get Principal ID</h3>
+                <QRCodeCanvas value={principalId} className="w-40 h-40 mx-auto" />
+                <div className="mt-4 flex justify-end">
+                  <button
+                    onClick={toggleQrModal}
+                    className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </main>
       </div>
     </div>
@@ -125,3 +135,4 @@ const Settings = () => {
 };
 
 export default Settings;
+
