@@ -6,7 +6,7 @@ function Header() {
     <header className="bg-white shadow-sm">
           <div className="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center">
-              <div className="relative w-3/4 max-w-md mx-auto">
+              <div className="relative w-2/3 max-w-md mx-auto">
                 <input
                   type="text"
                   placeholder="Search..."

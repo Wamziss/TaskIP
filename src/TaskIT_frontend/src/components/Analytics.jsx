@@ -1,53 +1,80 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronDown, Plus, ThreeDotsVertical } from 'react-bootstrap-icons';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Line, Doughnut, Bar } from 'react-chartjs-2';
+
+// Register elements and scales
+ChartJS.register(
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+);
+
+
+
+import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from './subcomponents/Sidebar';
-import Table from './Dashboard/Table';
 import Header from './subcomponents/Header';
-import { Actor, HttpAgent} from '@dfinity/agent';
-import { useAuth } from './AuthContext';
+import { Chart } from 'react-chartjs-2';
 
 const Analytics = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState('Project A');
   const [showModal, setShowModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const authClient = useAuth();
+  const chartRef = useRef(null);
   
   useEffect(() => {
-    if (!authClient) {
-        console.log("AuthClient is not yet initialized.");
-        return;
-    }
-
-    
-    const identity = authClient.getIdentity();
-    const canisterId = import.meta.env.VITE_CANISTER_ID;
-
-    console.log("Hurray!:", identity.getPrincipal().toText());
-
-    if (!canisterId) {
-        throw new Error('Canister ID is not defined');
-    }
-
-    const getAuthenticatedActor = () => {
-        try {
-            const agent = new HttpAgent({ identity });
-            return Actor.createActor(idlFactory, { agent, canisterId });
-        } catch (error) {
-            console.error("Failed to create actor:", error);
-            throw error;
-        }
-    }
-
-    console.log("AuthClient initialized:");
-
-    }, [authClient]);
+    return () => {
+      // Clean up chart instance to avoid reusing canvas issues
+      if (chartRef.current) {
+        chartRef.current.destroy();
+      }
+    };
+  }, []);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const toggleModal = () => setShowModal(!showModal);
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
   const projects = ['Project A', 'Project B', 'Project C'];
+
+  const taskStatusData = {
+    labels: ['Completed', 'In Progress', 'Pending', 'Overdue'],
+    datasets: [
+      {
+        label: 'Tasks Status',
+        data: [120, 90, 40, 10], // Example data
+        backgroundColor: ['#4CAF50', '#FFC107', '#03A9F4', '#FF5252'],
+      },
+    ],
+  };
+
+  const teamPerformanceData = {
+    labels: ['Cynthia Terry', 'Alex N', 'PID: dfte-fgh..', 'Hannah Mwangi'],
+    datasets: [
+      {
+        label: 'Tasks Completed',
+        data: [30, 50, 60, 40], // Example data
+        backgroundColor: '#4A90E2',
+      },
+    ],
+  };
 
 
   return (
@@ -60,62 +87,107 @@ const Analytics = () => {
         <Header/>
 
         <main className="flex-1 bg-white ">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex justify-between items-center mb-6">
-              <div className="flex items-center space-x-4">
-              <button
-                  onClick={toggleDropdown}
-                  className="text-2xl font-semibold text-gray-900 flex items-center space-x-2"
-                >
-                  <span>{selectedProject}</span>
-                  <ChevronDown className="h-5 w-5 text-gray-600" />
-                </button>
+          <div className="bg-white shadow p-4 rounded-lg mb-6">
+            <h1 className="text-2xl font-bold text-gray-800">Project Analytics</h1>
+            <p className="text-gray-600">Get insights into project progress, team performance, and task metrics.</p>
+          </div>
 
-                {/* Dropdown menu */}
-                {showDropdown && (
-                  <div className="absolute z-10 mt-2 w-48 bg-white shadow-lg rounded-md">
-                    <ul className="divide-y divide-gray-200">
-                      {projects.map((project) => (
-                        <li
-                          key={project}
-                          onClick={() => {
-                            setSelectedProject(project);
-                            setShowDropdown(false); // Close the dropdown after selecting a project
-                          }}
-                          className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
-                        >
-                          {project}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                <button onClick={toggleModal} className="text-gray-500 hover:text-gray-700">
-                  <ThreeDotsVertical className="h-5 w-5" />
-                </button>
-                {/* Modal for project actions */}
-                {showModal && (
-                  <div className="absolute z-10 mt-2 w-48 bg-white shadow-lg rounded-md">
-                    <ul>
-                      <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">View Description</li>
-                      <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">Edit Project</li>
-                      <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">Delete</li>
-                    </ul>
-                  </div>
-                )}
+          {/* Project Overview */}
+          <div className="bg-white shadow p-4 rounded-lg mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Project Overview</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-4 bg-blue-50 rounded-lg shadow">
+                <h3 className="text-lg font-bold text-blue-600">Active Projects</h3>
+                <p className="text-2xl font-semibold text-gray-800">5</p>
               </div>
 
-              <button
-                type="button"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#4A90E2] hover:bg-[#3A7BC8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4A90E2]"
-              >
-                <Plus className="mr-2 h-5 w-5" /> CREATE PROJECT
-              </button>
-            </div>
+              <div className="p-4 bg-green-50 rounded-lg shadow">
+                <h3 className="text-lg font-bold text-green-600">Completed Projects</h3>
+                <p className="text-2xl font-semibold text-gray-800">12</p>
+              </div>
 
-            {/* Table */}
-            <div className="overflow-x-auto">
-              <Table/>
+              <div className="p-4 bg-yellow-50 rounded-lg shadow">
+                <h3 className="text-lg font-bold text-yellow-600">Pending Projects</h3>
+                <p className="text-2xl font-semibold text-gray-800">3</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Task Status Metrics */}
+          <div className="bg-white shadow p-4 rounded-lg mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Task Status Metrics</h2>
+            <div className="h-64">
+              {/* Placeholder chart (replace with real charts if needed) */}
+              <Chart
+                ref={chartRef} 
+                type="pie"
+                data={taskStatusData}
+                options={{ responsive: true, maintainAspectRatio: false }}
+              />
+              </div>
+          </div>
+
+          {/* Team Performance */}
+          <div className="bg-white shadow p-4 rounded-lg mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Team Performance</h2>
+            <div className="h-64">
+              {/* Placeholder chart (replace with real charts if needed) */}
+              <Chart
+              ref={chartRef} 
+                type="bar"
+                data={teamPerformanceData}
+                options={{ responsive: true, maintainAspectRatio: false }}
+              />
+              
+            </div>
+          </div>
+
+          {/* Time Tracking */}
+          <div className="bg-white shadow p-4 rounded-lg mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Time Tracking</h2>
+            <p className="text-gray-600">Track the total time spent on tasks across projects.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+              <div className="p-4 bg-gray-50 rounded-lg shadow">
+                <h3 className="text-lg font-bold text-gray-700">Total Hours</h3>
+                <p className="text-2xl font-semibold text-gray-800">340 hrs</p>
+              </div>
+
+              <div className="p-4 bg-gray-50 rounded-lg shadow">
+                <h3 className="text-lg font-bold text-gray-700">Project Alpha</h3>
+                <p className="text-2xl font-semibold text-gray-800">120 hrs</p>
+              </div>
+
+              <div className="p-4 bg-gray-50 rounded-lg shadow">
+                <h3 className="text-lg font-bold text-gray-700">Project Beta</h3>
+                <p className="text-2xl font-semibold text-gray-800">90 hrs</p>
+              </div>
+
+              <div className="p-4 bg-gray-50 rounded-lg shadow">
+                <h3 className="text-lg font-bold text-gray-700">Project Gamma</h3>
+                <p className="text-2xl font-semibold text-gray-800">130 hrs</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Priority Overview */}
+          <div className="bg-white shadow p-4 rounded-lg">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Priority Overview</h2>
+            <p className="text-gray-600">Understand the distribution of tasks by priority level.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+              <div className="p-4 bg-gray-50 rounded-lg shadow">
+                <h3 className="text-lg font-bold text-gray-700">Low Priority</h3>
+                <p className="text-2xl font-semibold text-gray-800">30 tasks</p>
+              </div>
+
+              <div className="p-4 bg-gray-50 rounded-lg shadow">
+                <h3 className="text-lg font-bold text-gray-700">Normal Priority</h3>
+                <p className="text-2xl font-semibold text-gray-800">50 tasks</p>
+              </div>
+
+              <div className="p-4 bg-gray-50 rounded-lg shadow">
+                <h3 className="text-lg font-bold text-gray-700">Urgent Priority</h3>
+                <p className="text-2xl font-semibold text-gray-800">15 tasks</p>
+              </div>
             </div>
           </div>
         </main>

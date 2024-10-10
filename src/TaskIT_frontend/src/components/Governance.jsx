@@ -3,45 +3,12 @@ import { ChevronDown, Plus, ThreeDotsVertical } from 'react-bootstrap-icons';
 import Sidebar from './subcomponents/Sidebar';
 import Table from './Dashboard/Table';
 import Header from './subcomponents/Header';
-import { Actor, HttpAgent} from '@dfinity/agent';
-import { useAuth } from './AuthContext';
 
 const Governance = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState('Project A');
   const [showModal, setShowModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const authClient = useAuth();
-  
-  useEffect(() => {
-    if (!authClient) {
-        console.log("AuthClient is not yet initialized.");
-        return;
-    }
-
-    
-    const identity = authClient.getIdentity();
-    const canisterId = import.meta.env.VITE_CANISTER_ID;
-
-    console.log("Hurray!:", identity.getPrincipal().toText());
-
-    if (!canisterId) {
-        throw new Error('Canister ID is not defined');
-    }
-
-    const getAuthenticatedActor = () => {
-        try {
-            const agent = new HttpAgent({ identity });
-            return Actor.createActor(idlFactory, { agent, canisterId });
-        } catch (error) {
-            console.error("Failed to create actor:", error);
-            throw error;
-        }
-    }
-
-    console.log("AuthClient initialized:");
-
-    }, [authClient]);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const toggleModal = () => setShowModal(!showModal);
@@ -60,63 +27,82 @@ const Governance = () => {
         <Header/>
 
         <main className="flex-1 bg-white ">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex justify-between items-center mb-6">
-              <div className="flex items-center space-x-4">
-              <button
-                  onClick={toggleDropdown}
-                  className="text-2xl font-semibold text-gray-900 flex items-center space-x-2"
-                >
-                  <span>{selectedProject}</span>
-                  <ChevronDown className="h-5 w-5 text-gray-600" />
-                </button>
+          <div className="bg-white shadow p-4 rounded-lg mb-6">
+            <h1 className="text-2xl font-bold text-gray-800">Project Governance</h1>
+            <p className="text-gray-600">Manage roles, permissions, and voting for important project decisions.</p>
+          </div>
 
-                {/* Dropdown menu */}
-                {showDropdown && (
-                  <div className="absolute z-10 mt-2 w-48 bg-white shadow-lg rounded-md">
-                    <ul className="divide-y divide-gray-200">
-                      {projects.map((project) => (
-                        <li
-                          key={project}
-                          onClick={() => {
-                            setSelectedProject(project);
-                            setShowDropdown(false); // Close the dropdown after selecting a project
-                          }}
-                          className="py-2 px-4 hover:bg-gray-100 cursor-pointer"
-                        >
-                          {project}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                <button onClick={toggleModal} className="text-gray-500 hover:text-gray-700">
-                  <ThreeDotsVertical className="h-5 w-5" />
-                </button>
-                {/* Modal for project actions */}
-                {showModal && (
-                  <div className="absolute z-10 mt-2 w-48 bg-white shadow-lg rounded-md">
-                    <ul>
-                      <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">View Description</li>
-                      <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">Edit Project</li>
-                      <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">Delete</li>
-                    </ul>
-                  </div>
-                )}
+          {/* Role Management */}
+          <div className="bg-white shadow p-4 rounded-lg mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Role Management</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Role Card */}
+              <div className="p-4 bg-blue-50 rounded-lg shadow">
+                <h3 className="text-lg font-bold text-blue-600">Admin</h3>
+                <p className="text-sm text-gray-600">Full access to project settings, task management, and team permissions.</p>
               </div>
 
-              <button
-                type="button"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#4A90E2] hover:bg-[#3A7BC8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4A90E2]"
-              >
-                <Plus className="mr-2 h-5 w-5" /> CREATE PROJECT
-              </button>
-            </div>
+              <div className="p-4 bg-green-50 rounded-lg shadow">
+                <h3 className="text-lg font-bold text-green-600">Contributor</h3>
+                <p className="text-sm text-gray-600">Can edit and manage tasks, but no access to project settings or roles.</p>
+              </div>
 
-            {/* Table */}
-            <div className="overflow-x-auto">
-              <Table/>
+              <div className="p-4 bg-yellow-50 rounded-lg shadow">
+                <h3 className="text-lg font-bold text-yellow-600">Viewer</h3>
+                <p className="text-sm text-gray-600">Can view tasks and project details, but cannot make edits.</p>
+              </div>
             </div>
+          </div>
+
+          {/* Project Ownership */}
+          <div className="bg-white shadow p-4 rounded-lg mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Project Ownership</h2>
+            <p className="text-gray-600">Current Owner: <span className="font-bold text-gray-800">Hannah Mwangi</span></p>
+            <button className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-700">
+              Transfer Ownership
+            </button>
+          </div>
+
+          {/* Voting System */}
+          <div className="bg-white shadow p-4 rounded-lg mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Voting System</h2>
+            <p className="text-gray-600 mb-4">Submit proposals and allow team members to vote on key decisions.</p>
+            <button className="bg-green-600 text-white py-2 px-4 rounded-lg shadow hover:bg-green-700">
+              Create New Proposal
+            </button>
+            <div className="mt-6">
+              <h3 className="text-lg font-bold text-gray-800 mb-4">Active Proposals</h3>
+              {/* Example Proposal */}
+              <div className="bg-gray-50 p-4 rounded-lg shadow mb-4">
+                <h4 className="font-semibold text-gray-700">Proposal: Extend Project Deadline</h4>
+                <p className="text-sm text-gray-600">Proposed by: John Doe</p>
+                <div className="flex items-center mt-4 space-x-4">
+                  <button className="bg-green-500 text-white py-1 px-3 rounded-lg hover:bg-green-600">Vote Yes</button>
+                  <button className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600">Vote No</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Access Logs */}
+          <div className="bg-white shadow p-4 rounded-lg mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Access Logs</h2>
+            <p className="text-gray-600 mb-4">View who has accessed and made changes to the project.</p>
+            {/* Example Log */}
+            <div className="bg-gray-50 p-4 rounded-lg shadow">
+              <p className="text-sm text-gray-600">John Doe updated task <span className="font-bold">"Complete Report"</span> on Oct 10, 2024 at 2:34 PM</p>
+            </div>
+          </div>
+
+          {/* Policies and Guidelines */}
+          <div className="bg-white shadow p-4 rounded-lg">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Policies & Guidelines</h2>
+            <p className="text-gray-600">Ensure the team follows these project policies:</p>
+            <ul className="list-disc list-inside mt-4 text-gray-600">
+              <li>All members must vote on major decisions.</li>
+              <li>Admins can only transfer ownership with consent from the majority.</li>
+              <li>Changes to deadlines must be voted on and approved by the team.</li>
+            </ul>
           </div>
         </main>
       </div>

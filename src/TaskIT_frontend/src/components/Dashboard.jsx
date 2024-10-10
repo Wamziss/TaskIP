@@ -3,52 +3,30 @@ import { ChevronDown, Plus, ThreeDotsVertical } from 'react-bootstrap-icons';
 import Sidebar from './subcomponents/Sidebar';
 import Table from './Dashboard/Table';
 import Header from './subcomponents/Header';
-import { Actor, HttpAgent} from '@dfinity/agent';
-import { useAuth } from './AuthContext';
+import ProjectModal from './subcomponents/ProjectModal';
 
 const Dashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState('Project A');
   const [showModal, setShowModal] = useState(false);
+  const [showProjectModal, setShowProjectModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const authClient = useAuth();
-  
-  useEffect(() => {
-    if (!authClient) {
-        console.log("AuthClient is not yet initialized.");
-        return;
-    }
+  const [tasks, setTasks] = useState([
+    // Initial tasks here
+  ]);
 
-    
-    const identity = authClient.getIdentity();
-    const canisterId = import.meta.env.VITE_CANISTER_ID;
-
-    console.log("Hurray!:", identity.getPrincipal().toText());
-
-    if (!canisterId) {
-        throw new Error('Canister ID is not defined');
-    }
-
-    const getAuthenticatedActor = () => {
-        try {
-            const agent = new HttpAgent({ identity });
-            return Actor.createActor(idlFactory, { agent, canisterId });
-        } catch (error) {
-            console.error("Failed to create actor:", error);
-            throw error;
-        }
-    }
-
-    console.log("AuthClient initialized:");
-
-    }, [authClient]);
+  const addTask = (newTask) => {
+    setTasks([...tasks, newTask]);
+  };
 
   const toggleSidebar = () => setIsOpen(!isOpen);
-  const toggleModal = () => setShowModal(!showModal);
+  const toggleModal = () =>  {
+    console.log('Toggle modal triggered');
+    setShowProjectModal(!showProjectModal);
+  };
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
   const projects = ['Project A', 'Project B', 'Project C'];
-
 
   return (
     <div className="flex h-screen bg-gray-100 overflow-x-hidden">
@@ -94,7 +72,7 @@ const Dashboard = () => {
                   <ThreeDotsVertical className="h-5 w-5" />
                 </button>
                 {/* Modal for project actions */}
-                {showModal && (
+                {showProjectModal && (
                   <div className="absolute z-10 mt-2 w-48 bg-white shadow-lg rounded-md">
                     <ul>
                       <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">View Description</li>
@@ -106,10 +84,11 @@ const Dashboard = () => {
               </div>
 
               <button
+                onClick={() => setShowModal(true)}
                 type="button"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#4A90E2] hover:bg-[#3A7BC8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4A90E2]"
               >
-                <Plus className="mr-2 h-5 w-5" /> CREATE PROJECT
+                <Plus className="mr-2 h-5 w-5" /> CREATE TASK
               </button>
             </div>
 
@@ -120,6 +99,9 @@ const Dashboard = () => {
           </div>
         </main>
       </div>
+      {/* Modal Component */}
+      <ProjectModal showModal={showModal} setShowModal={setShowModal} addTask={addTask} />
+    
     </div>
   );
 };
