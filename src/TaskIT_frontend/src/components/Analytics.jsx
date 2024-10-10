@@ -5,10 +5,12 @@ import {
   LinearScale,
   PointElement,
   LineElement,
-  BarElement,
+  PieController,
+  BarController,
   Title,
   Tooltip,
   Legend,
+  BarElement,
 } from 'chart.js';
 import { Line, Doughnut, Bar } from 'react-chartjs-2';
 
@@ -19,6 +21,8 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
+  PieController,
+  BarController,
   BarElement,
   Title,
   Tooltip,

@@ -1,3 +1,4 @@
+import { X } from 'lucide-react';
 import React, { useState } from 'react';
 import { Plus } from 'react-bootstrap-icons';
 
@@ -40,10 +41,15 @@ function ProjectModal({ showModal, setShowModal, addTask }) {
   return (
     showModal && (
       <div className="fixed inset-0 z-50 flex py-5 pt-80 items-center overflow-y-auto justify-center bg-black bg-opacity-50">
+        
         <div className="bg-white p-6 pt-32 rounded-lg shadow-lg w-full max-w-lg overflow-y-auto">
-          <h2 className="text-lg font-medium mb-4">Create New Task</h2>
+          <div className='flex'>
+            <X onClick={() => {setShowModal(false)}} className='relative left-[90%] bg-blue-300 text-base rounded-full p-1 h-8 w-auto'/>
+            <h2 className="text-lg font-medium mb-4">Create New Task</h2>
+          </div>
           <form>
             {/* Task Name */}
+            
             <div className="mb-4">
               <label className="block text-sm font-medium">Task Name</label>
               <input

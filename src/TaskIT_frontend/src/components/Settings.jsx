@@ -3,6 +3,7 @@ import { QRCodeCanvas } from 'qrcode.react'; // For generating QR code
 import Sidebar from './subcomponents/Sidebar';
 import Header from './subcomponents/Header';
 import { Copy, QrCode, Pencil } from 'react-bootstrap-icons';
+import { useAuth } from '../AuthContext';
 
 const Settings = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +12,23 @@ const Settings = () => {
   const [showQrModal, setShowQrModal] = useState(false);
   const [isPushEnabled, setIsPushEnabled] = useState(false);
   const [isWatchEnabled, setIsWatchEnabled] = useState(false);
+  const authClient = useAuth();
+
+  useEffect(() => {
+    if (authClient) {
+      try {
+        const identity = authClient.getIdentity();
+        const principalID = identity.getPrincipal().toText();
+        setPrincipalId(principalID);
+      } catch (error) {
+        console.error("Error fetching principal ID:", error);
+      }
+    } else {
+      console.log("Authclient not initialized");
+    }
+  }, [authClient]); 
+
+  
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const toggleQrModal = () => setShowQrModal(!showQrModal);

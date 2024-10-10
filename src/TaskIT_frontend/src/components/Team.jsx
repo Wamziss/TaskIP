@@ -10,10 +10,10 @@ const Team = () => {
 
   // Example team data, you can fetch from backend in real implementation
   const teamMembers = [
-    { name: 'Alice Johnson', role: 'Project Manager', img: 'https://via.placeholder.com/150' },
-    { name: 'John Doe', role: 'Developer', img: 'https://via.placeholder.com/150' },
-    { name: 'Maria Smith', role: 'Designer', img: 'https://via.placeholder.com/150' },
-    { name: 'Mark Lee', role: 'QA Engineer', img: 'https://via.placeholder.com/150' }
+    { name: 'Alice Johnson', role: 'Project Manager', img: 'https://unsplash.com/photos/woman-smiling-beside-red-wall-LWkFHEGpleE' },
+    { name: 'John Doe', role: 'Developer', img: 'https://unsplash.com/photos/shallow-focus-photography-of-white-shih-tzu-puppy-running-on-the-grass-qO-PIF84Vxg' },
+    { name: 'Maria Smith', role: 'Designer', img: 'https://unsplash.com/photos/QCqyRNw-UqE'},
+    { name: 'Mark Lee', role: 'QA Engineer', img: 'https://unsplash.com/photos/mans-grey-and-black-shirt-ILip77SbmOE'}
   ];
 
   return (
@@ -32,7 +32,7 @@ const Team = () => {
             {teamMembers.map((member, index) => (
               <div key={index} className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center justify-between space-y-4">
                 {/* Team member's profile image */}
-                <img src={member.img} alt={member.name} className="w-24 h-24 rounded-full object-cover" />
+                <img src={member.img} alt={member.name} className="w-24 h-24 rounded-full object-cover border-2 border-[#4A90E2]" />
 
                 {/* Team member's name and role */}
                 <div className="text-center">
@@ -42,11 +42,11 @@ const Team = () => {
 
                 {/* Action buttons */}
                 <div className="flex space-x-4">
-                  <button className="flex items-center px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 transition-colors">
+                  <button className="flex items-center px-3 py-1 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors">
                     <ChatDots className="mr-2 h-5 w-5" />
                     Message
                   </button>
-                  <button className="flex items-center px-4 py-2 text-blue-500 bg-transparent border border-blue-500 rounded hover:bg-blue-500 hover:text-white transition-colors">
+                  <button className="flex items-center px-3 py-1 text-blue-500 bg-transparent border border-black rounded-lg hover:bg-blue-500 hover:text-white transition-colors">
                     <Eye className="mr-2 h-5 w-5" />
                     View Profile
                   </button>
