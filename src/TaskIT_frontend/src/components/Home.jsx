@@ -63,7 +63,7 @@ const Home = () => {
           faster and smarter.
         </p>
         <div className="mt-8 flex justify-center space-x-4">
-          <button className="bg-white text-[#4A90E2] px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300">
+          <button className="bg-white text-[#4A90E2] px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300" onClick={(event) => handleSignIn(event)}>
             Get Started Free
           </button>
           <button className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-[#4A90E2] transition duration-300">
@@ -284,7 +284,7 @@ const Home = () => {
       <section className="py-16 px-6 md:px-12 lg:px-20 bg-[#4A90E2] text-white text-center">
         <h2 className="text-3xl font-bold mb-4">Ready to Supercharge Your Projects?</h2>
         <p className="text-xl mb-8">Join thousands of teams already using TaskIT to achieve more.</p>
-        <button className="bg-white text-[#4A90E2] px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300">
+        <button className="bg-white text-[#4A90E2] px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300" onClick={(event) => handleSignIn(event)}>
           Get started
         </button>
       </section>

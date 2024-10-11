@@ -22,7 +22,7 @@ const Sidebar = () => {
       {/* Mobile menu button */}
       <button
         onClick={toggleSidebar}
-        className={`fixed top-4 left-4 z-50 p-2 bg-[#4A90E2] text-white rounded-md shadow-lg md:hidden hover:bg-[#3A7BC8] transition-colors duration-200 ${isOpen ? 'hidden' : ''}`}
+        className={`fixed top-4 left-4 z-50 p-2 bg-white text-[#4A90E2] rounded-md shadow-lg md:hidden hover:bg-[#4A90E2] hover:text-white transition-colors duration-200 ${isOpen ? 'hidden' : ''}`}
         aria-label="Toggle menu"
       >
         <Menu size={24} />
