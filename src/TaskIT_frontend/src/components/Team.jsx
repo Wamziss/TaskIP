@@ -10,10 +10,10 @@ const Team = () => {
 
   // Example team data, you can fetch from backend in real implementation
   const teamMembers = [
-    { name: 'Alice Johnson', role: 'Project Manager', img: 'https://unsplash.com/photos/woman-smiling-beside-red-wall-LWkFHEGpleE' },
-    { name: 'John Doe', role: 'Developer', img: 'https://unsplash.com/photos/shallow-focus-photography-of-white-shih-tzu-puppy-running-on-the-grass-qO-PIF84Vxg' },
-    { name: 'Maria Smith', role: 'Designer', img: 'https://unsplash.com/photos/QCqyRNw-UqE'},
-    { name: 'Mark Lee', role: 'QA Engineer', img: 'https://unsplash.com/photos/mans-grey-and-black-shirt-ILip77SbmOE'}
+    { name: 'Alice Johnson', role: 'Project Manager', img: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+    { name: 'John Doe', role: 'Developer', img: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+    { name: 'Maria Smith', role: 'Designer', img: 'https://images.unsplash.com/photo-1583314965950-cd54a8b6db84?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'},
+    { name: 'Mark Lee', role: 'QA Engineer', img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}
   ];
 
   return (
