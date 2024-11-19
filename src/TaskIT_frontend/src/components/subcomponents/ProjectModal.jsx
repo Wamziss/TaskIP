@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { X, Plus, Trash2 } from 'lucide-react';
+import { Actor } from '@dfinity/agent';
+
+import TaskIT_backend from '../../../../declarations/TaskIT_backend';
 
 function ProjectModal({ showModal, setShowModal, addProject }) {
   const [projectName, setProjectName] = useState('');
@@ -66,15 +69,75 @@ function ProjectModal({ showModal, setShowModal, addProject }) {
     setTasks(updatedTasks);
   };
 
-  const handleSubmit = () => {
-    const newProject = {
-      id: Date.now(),
-      name: projectName,
-      description: projectDescription,
-      tasks: tasks
-    };
-    addProject(newProject);
-    setShowModal(false);
+  const handleSubmit = async () => {
+    try {
+      // Prepare the project data to match the Motoko backend's createProject signature
+      const projectData = {
+        projectName,
+        projectDescription,
+        tasks: tasks.map(task => ({
+          name: task.name,
+          description: task.description,
+          subtasks: task.subtasks.map(subtask => ({
+            name: subtask.name,
+            description: subtask.description,
+            assignees: subtask.assignees.filter(a => a.trim() !== ''), // Remove empty assignees
+            dueDate: BigInt(new Date(subtask.dueDate).getTime()), // Convert to nanoseconds timestamp
+            priority: subtask.priority
+          }))
+        }))
+      };
+
+      // Call the backend method to create the project
+      const result = await TaskIT_backend.createProject(
+        projectData.projectName,
+        projectData.projectDescription,
+        projectData.tasks
+      );
+
+      // Handle the result 
+      switch (result) {
+        case { ok: projectId }:
+          // Project created successfully
+          console.log('Project created with ID:', projectId);
+          
+          // Optional: call addProject if you're maintaining a local state
+          if (addProject) {
+            addProject({
+              id: projectId,
+              name: projectName,
+              description: projectDescription,
+              tasks: tasks
+            });
+          }
+
+          // Close the modal
+          setShowModal(false);
+          break;
+        
+        case { err: error } :
+          // Handle error cases
+          console.error('Error creating project:', error);
+          
+          // You might want to show an error message to the user
+          switch (error) {
+            case 'NotAuthorized':
+              alert('You are not authorized to create this project.');
+              break;
+            case 'InvalidInput':
+              alert('Please check your project details and try again.');
+              break;
+            default:
+              alert('An unexpected error occurred.');
+          }
+          break;
+        default:
+          console.error('Unexpected result:', result);
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error);
+      alert('Failed to create project. Please try again.');
+    }
   };
 
   const removeTask = (taskIndex) => {
