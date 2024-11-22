@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { X, Plus, Trash2 } from 'lucide-react';
 import { Actor } from '@dfinity/agent';
 
-import TaskIT_backend from '../../../../declarations/TaskIT_backend';
+import { TaskIT_backend } from '../../../../declarations/TaskIT_backend';
 
 function ProjectModal({ showModal, setShowModal, addProject }) {
   const [projectName, setProjectName] = useState('');
