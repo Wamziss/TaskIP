@@ -35,7 +35,7 @@ const Sidebar = () => {
         } md:translate-x-0 shadow-lg`}
       >
         <div className="flex items-center justify-between h-16 px-4 bg-[#3A7BC8]">
-          <span className="text-2xl font-bold">TaskIT</span>
+          <span className="text-2xl font-bold">TaskIP</span>
           <button onClick={toggleSidebar} className="md:hidden hover:bg-[#2A6BB8] p-1 rounded transition-colors duration-200">
             <X size={24} />
           </button>

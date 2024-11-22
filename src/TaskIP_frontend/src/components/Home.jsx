@@ -35,7 +35,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex-shrink-0">
-              <img src={logo} alt="TaskIT Logo" className="w-32 h-12" />
+              <img src={logo} alt="TaskIP Logo" className="w-32 h-12" />
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
@@ -56,10 +56,10 @@ const Home = () => {
       {/* Hero Section */}
       <header className="text-center py-20 px-6 md:px-12 lg:px-20 bg-gradient-to-r from-[#A4C3E3] to-[#4A90E2]">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-          Revolutionize Your Project Management with TaskIT
+          Revolutionize Your Project Management with TaskIP
         </h1>
         <p className="text-lg md:text-xl text-white mt-4 max-w-2xl mx-auto">
-          Effortlessly create, manage, and collaborate on projects. TaskIT empowers teams to achieve more, 
+          Effortlessly create, manage, and collaborate on projects. TaskIP empowers teams to achieve more, 
           faster and smarter.
         </p>
         <div className="mt-8 flex justify-center space-x-4">
@@ -74,7 +74,7 @@ const Home = () => {
 
       {/* Features Section */}
       <section id="features" className="py-16 px-6 md:px-12 lg:px-20 bg-white">
-        <h2 className="text-3xl font-bold text-center mb-12">Why Choose TaskIT?</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">Why Choose TaskIP?</h2>
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {[
             {
@@ -99,7 +99,7 @@ const Home = () => {
             },
             {
               title: "Customizable Workflows",
-              description: "Tailor TaskIT to fit your unique project management needs.",
+              description: "Tailor TaskIP to fit your unique project management needs.",
               icon: "🔧"
             },
             {
@@ -146,7 +146,7 @@ const Home = () => {
             {[
               {
                 title: "Decentralized Governance",
-                description: "Participate in platform decisions and shape the future of TaskIT.",
+                description: "Participate in platform decisions and shape the future of TaskIP.",
                 icon: "🏛️"
               },
               {
@@ -193,7 +193,7 @@ const Home = () => {
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {[
             {
-              quote: "TaskIT has transformed how our team collaborates. It's intuitive and powerful!",
+              quote: "TaskIP has transformed how our team collaborates. It's intuitive and powerful!",
               author: "Sarah J., Project Manager"
             },
             {
@@ -201,7 +201,7 @@ const Home = () => {
               author: "Michael L., Software Developer"
             },
             {
-              quote: "TaskIT's analytics help us identify bottlenecks and improve our productivity.",
+              quote: "TaskIP's analytics help us identify bottlenecks and improve our productivity.",
               author: "Emily R., Team Lead"
             }
           ].map((testimonial, index) => (
@@ -254,20 +254,20 @@ const Home = () => {
         <div className="max-w-5xl mx-auto">
           {[
             {
-              question: "How does TaskIT use blockchain technology?",
-              answer: "TaskIT leverages blockchain to ensure data integrity, enable decentralized governance, and provide a transparent project management ecosystem."
+              question: "How does TaskIP use blockchain technology?",
+              answer: "TaskIP leverages blockchain to ensure data integrity, enable decentralized governance, and provide a transparent project management ecosystem."
             },
             {
               question: "What are the benefits of decentralized project management?",
               answer: "Decentralized project management offers enhanced security, global accessibility, and the ability for users to participate in platform governance."
             },
             {
-              question: "Do I need to understand blockchain to use TaskIT?",
-              answer: "Not at all! TaskIT is designed to be user-friendly, regardless of your blockchain knowledge. You can enjoy its benefits without any technical expertise."
+              question: "Do I need to understand blockchain to use TaskIP?",
+              answer: "Not at all! TaskIP is designed to be user-friendly, regardless of your blockchain knowledge. You can enjoy its benefits without any technical expertise."
             },
             {
               question: "How does governance participation work?",
-              answer: "Pro plan users can vote on proposed changes to the platform, suggest new features, and have a say in the future direction of TaskIT."
+              answer: "Pro plan users can vote on proposed changes to the platform, suggest new features, and have a say in the future direction of TaskIP."
             }
           ].map((faq, index) => (
             <div key={index} className="mb-6">
@@ -283,7 +283,7 @@ const Home = () => {
       {/* CTA Section */}
       <section className="py-16 px-6 md:px-12 lg:px-20 bg-[#4A90E2] text-white text-center">
         <h2 className="text-3xl font-bold mb-4">Ready to Supercharge Your Projects?</h2>
-        <p className="text-xl mb-8">Join thousands of teams already using TaskIT to achieve more.</p>
+        <p className="text-xl mb-8">Join thousands of teams already using TaskIP to achieve more.</p>
         <button className="bg-white text-[#4A90E2] px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300" onClick={(event) => handleSignIn(event)}>
           Get started
         </button>
@@ -327,7 +327,7 @@ const Home = () => {
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-gray-700 text-center">
-            <p>&copy; 2024 TaskIT. All rights reserved.</p>
+            <p>&copy; 2024 TaskIP. All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -1,11 +1,11 @@
 {
-  "name": "TaskIT_frontend",
+  "name": "TaskIP_frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "setup": "npm i && dfx canister create TaskIT_backend && dfx generate TaskIT_backend && dfx deploy",
+    "setup": "npm i && dfx canister create TaskIP_backend && dfx generate TaskIP_backend && dfx deploy",
     "start": "vite --port 3000",
     "prebuild": "dfx generate",
     "build": "tsc && vite build",

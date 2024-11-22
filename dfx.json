@@ -1,18 +1,18 @@
 {
   "canisters": {
-    "TaskIT_backend": {
-      "main": "src/TaskIT_backend/main.mo",
+    "TaskIP_backend": {
+      "main": "src/TaskIP_backend/main.mo",
       "type": "motoko"
     },
-    "TaskIT_frontend": {
+    "TaskIP_frontend": {
       "dependencies": [
-        "TaskIT_backend"
+        "TaskIP_backend"
       ],
       "source": [
-        "src/TaskIT_frontend/dist"
+        "src/TaskIP_frontend/dist"
       ],
       "type": "assets",
-      "workspace": "TaskIT_frontend"
+      "workspace": "TaskIP_frontend"
     }
   },
   "defaults": {

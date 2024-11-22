@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { X, Plus, Trash2 } from 'lucide-react';
 import { Actor } from '@dfinity/agent';
 
-import { TaskIT_backend } from '../../../../declarations/TaskIT_backend';
+import { TaskIP_backend } from '../../../../declarations/TaskIP_backend';
 
 function ProjectModal({ showModal, setShowModal, addProject }) {
   const [projectName, setProjectName] = useState('');
@@ -89,7 +89,7 @@ function ProjectModal({ showModal, setShowModal, addProject }) {
       };
 
       // Call the backend method to create the project
-      const result = await TaskIT_backend.createProject(
+      const result = await TaskIP_backend.createProject(
         projectData.projectName,
         projectData.projectDescription,
         projectData.tasks
