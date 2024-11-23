@@ -51,7 +51,7 @@ const Table = () => {
   const data = [
     {
       id: 1,
-      assignedBy: "very-long-project-id-that-needs-truncating-123456789",
+      assignedBy: "fgthy-ghht-frgg-ggrr-rgrg-dfgse",
       taskName: "Task 1",
       description: "Fix the UI bug in the dashboard.",
       dueDate: "2024-12-01",
@@ -61,7 +61,7 @@ const Table = () => {
     },
     {
       id: 2,
-      assignedBy: "another-long-project-identifier-987654321",
+      assignedBy: "eggft-grg-ggrg-ggrg-ggrg-ggrg",
       taskName: "Task 2",
       description: "Develop backend for authentication.",
       dueDate: "2024-12-10",
