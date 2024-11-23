@@ -10,7 +10,7 @@ function ProjectModal({ showModal, setShowModal, addProject }) {
   const [tasks, setTasks] = useState([{
     name: '',
     description: '',
-    subtasks: [{
+    subtasks: [{ 
       name: '',
       description: '',
       assignees: [''],
