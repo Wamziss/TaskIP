@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { X, Plus, Trash2 } from 'lucide-react';
-import { Actor } from '@dfinity/agent';
-
 import { TaskIP_backend } from '../../../../declarations/TaskIP_backend';
 
 function ProjectModal({ showModal, setShowModal, addProject }) {
@@ -71,69 +69,73 @@ function ProjectModal({ showModal, setShowModal, addProject }) {
 
   const handleSubmit = async () => {
     try {
-      // Prepare the project data to match the Motoko backend's createProject signature
-      const projectData = {
+      // Prepare tasks data for backend
+      const processedTasks = tasks.map(task => ({
+        name: task.name,
+        description: task.description,
+        subtasks: task.subtasks.map(subtask => ({
+          name: subtask.name,
+          description: subtask.description,
+          assignees: subtask.assignees.filter(a => a.trim() !== ''),
+          dueDate: Math.floor(new Date(subtask.dueDate).getTime() / 1000),
+          priority: subtask.priority
+        }))
+      }));
+
+      
+      console.log('Project Name:', projectName);
+      console.log('Project Description:', projectDescription);
+      console.log('Processed Tasks:', processedTasks);
+
+      // Call backend to create project
+      const result = await TaskIP_backend.createProject(
         projectName,
         projectDescription,
-        tasks: tasks.map(task => ({
-          name: task.name,
-          description: task.description,
-          subtasks: task.subtasks.map(subtask => ({
-            name: subtask.name,
-            description: subtask.description,
-            assignees: subtask.assignees.filter(a => a.trim() !== ''), // Remove empty assignees
-            dueDate: BigInt(new Date(subtask.dueDate).getTime()), // Convert to nanoseconds timestamp
-            priority: subtask.priority
-          }))
-        }))
-      };
-
-      // Call the backend method to create the project
-      const result = await TaskIP_backend.createProject(
-        projectData.projectName,
-        projectData.projectDescription,
-        projectData.tasks
+        processedTasks
       );
 
-      // Handle the result 
-      switch (result) {
-        case { ok: projectId }:
-          // Project created successfully
-          console.log('Project created with ID:', projectId);
-          
-          // Optional: call addProject if you're maintaining a local state
-          if (addProject) {
-            addProject({
-              id: projectId,
-              name: projectName,
-              description: projectDescription,
-              tasks: tasks
-            });
-          }
+      if (result.ok !== undefined) {
+        const projectId = result.ok;
 
-          // Close the modal
-          setShowModal(false);
-          break;
-        
-        case { err: error } :
-          // Handle error cases
-          console.error('Error creating project:', error);
-          
-          // You might want to show an error message to the user
-          switch (error) {
-            case 'NotAuthorized':
-              alert('You are not authorized to create this project.');
-              break;
-            case 'InvalidInput':
-              alert('Please check your project details and try again.');
-              break;
-            default:
-              alert('An unexpected error occurred.');
-          }
-          break;
-        default:
-          console.error('Unexpected result:', result);
+        // Create a project object to pass to addProject
+        const newProject = {
+          id: projectId,
+          name: projectName,
+          description: projectDescription,
+          tasks: processedTasks.map((task, taskIndex) => ({
+            ...task,
+            id: taskIndex,
+            subtasks: task.subtasks.map((subtask, subtaskIndex) => ({
+              ...subtask,
+              id: subtaskIndex
+            }))
+          })),
+          createdAt: new Date().toISOString()
+        };
+
+        addProject(newProject);
+        setShowModal(false);
+
+        // Reset form
+        setProjectName('');
+        setProjectDescription('');
+        setTasks([{
+          name: '',
+          description: '',
+          subtasks: [{
+            name: '',
+            description: '',
+            assignees: [''],
+            dueDate: '',
+            priority: 'low'
+          }]
+        }]);
+      } else {
+        console.error('Error creating project:', result.err);
+        alert(`Failed to create project: ${result.err}`);
       }
+ 
+
     } catch (error) {
       console.error('Unexpected error:', error);
       alert('Failed to create project. Please try again.');
