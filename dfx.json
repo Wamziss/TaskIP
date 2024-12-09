@@ -13,6 +13,11 @@
       ],
       "type": "assets",
       "workspace": "TaskIP_frontend"
+
+    },
+    "token": {
+      "main": "src/TaskIP_backend/token.mo", 
+      "type": "motoko"
     }
   },
   "defaults": {
