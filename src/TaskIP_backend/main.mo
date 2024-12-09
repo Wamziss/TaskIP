@@ -85,7 +85,7 @@ actor Main {
             projectEntries.vals(),
             1,
             Nat.equal,
-            Hash.Nat
+            Hash.hash
         );
         projectEntries := [];
     };
